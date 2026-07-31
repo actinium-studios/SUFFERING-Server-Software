@@ -1,7 +1,7 @@
 package main
 
 /*
-Copyright © 2026 Syrup Studios>
+Copyright © 2026 Syrup Studios
 */
 
 import (
@@ -10,7 +10,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/gluau/gluau/vm"
+	lua "github.com/yuin/gopher-lua"
 	"gopkg.in/yaml.v3"
 )
 
@@ -86,19 +86,16 @@ func LoadMods() {
 			fmt.Printf("[Mod Loader] Loading: %s v%s by %s [%s environment]\n",
 				manifest.Name, manifest.Version, manifest.Author, manifest.Environment)
 
-			runLuauMod(scriptPath, manifest.Name)
+			runLuaMod(scriptPath, manifest.Name)
 		}
 	}
 	fmt.Println("================================\n")
 }
 
-func runLuauMod(scriptPath string, modName string) {
-	L, err := vm.CreateLuaVm()
-	if err != nil {
-		log.Printf("[%s] Failed to create Luau VM: %v", modName, err)
-		return
-	}
+func runLuaMod(scriptPath string, modName string) {
+	L := lua.NewState()
 	defer L.Close()
+
 
 	scriptBytes, err := os.ReadFile(scriptPath)
 	if err != nil {
@@ -106,17 +103,14 @@ func runLuauMod(scriptPath string, modName string) {
 		return
 	}
 
-	luaFunc, err := L.LoadChunk(vm.ChunkOpts{
-		Name: modName,
-		Code: string(scriptBytes),
-		// Env: envTab, // pass a custom global table here for sandboxing
-	})
+	fn, err := L.LoadString(string(scriptBytes))
 	if err != nil {
 		log.Printf("[%s] Compilation/Syntax Error:\n%v", modName, err)
 		return
 	}
 
-	if _, err := luaFunc.Call(); err != nil {
+	L.Push(fn)
+	if err := L.PCall(0, lua.MultRet, nil); err != nil {
 		log.Printf("[%s] Runtime Error: %v", modName, err)
 		return
 	}
