@@ -5,6 +5,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>SUFFERING_Server_Software</RootNamespace>
     <AssemblyName>SufferingServer</AssemblyName>
+    <ApplicationIcon>assets/icon.ico</ApplicationIcon>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
