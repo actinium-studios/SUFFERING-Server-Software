@@ -1,0 +1,138 @@
+name: Release SUFFERING Server
+
+on:
+  workflow_dispatch:
+
+env:
+  APP_NAME: SufferingServer
+  PROJECT: SUFFERING-Server-Software.csproj
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  # Linux + Windows, cross-published from one Linux runner
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - rid: linux-x64
+            archive: tar.gz
+          - rid: linux-arm64
+            archive: tar.gz
+          - rid: win-x64
+            archive: zip
+          - rid: win-arm64
+            archive: zip
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x   # match your TargetFramework
+
+      - name: Publish
+        run: >
+          dotnet publish ${{ env.PROJECT }}
+          -c Release
+          -r ${{ matrix.rid }}
+          --self-contained true
+          -p:PublishSingleFile=true
+          -p:DebugType=None
+          -o publish/${{ matrix.rid }}
+
+      - name: Package (tar.gz)
+        if: matrix.archive == 'tar.gz'
+        run: |
+          tar -czf ${{ env.APP_NAME }}-${{ matrix.rid }}.tar.gz -C publish/${{ matrix.rid }} .
+
+      - name: Package (zip)
+        if: matrix.archive == 'zip'
+        run: |
+          cd publish/${{ matrix.rid }}
+          zip -r ../../${{ env.APP_NAME }}-${{ matrix.rid }}.zip .
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-${{ matrix.rid }}
+          path: ${{ env.APP_NAME }}-${{ matrix.rid }}.*
+
+  # macOS universal .app (arm64 + x64 merged with lipo)
+  macos-universal:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Publish both architectures
+        run: |
+          for rid in osx-arm64 osx-x64; do
+            dotnet publish ${{ env.PROJECT }} \
+              -c Release -r $rid \
+              --self-contained true \
+              -p:DebugType=None \
+              -o publish/$rid
+          done
+
+      - name: Merge into universal binaries
+        run: |
+          mkdir -p publish/universal
+          cd publish/osx-arm64
+          find . -type f | while read -r f; do
+            mkdir -p "../universal/$(dirname "$f")"
+            if file "$f" | grep -q "Mach-O"; then
+              lipo -create "$f" "../osx-x64/$f" -output "../universal/$f"
+            else
+              cp "$f" "../universal/$f"
+            fi
+          done
+
+      - name: Build .app bundle
+        run: |
+          APP="${{ env.APP_NAME }}.app"
+          mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
+          cp -R publish/universal/. "$APP/Contents/MacOS/"
+          chmod +x "$APP/Contents/MacOS/${{ env.APP_NAME }}"
+          cat > "$APP/Contents/Info.plist" <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>CFBundleName</key><string>${{ env.APP_NAME }}</string>
+            <key>CFBundleIdentifier</key><string>com.example.${{ env.APP_NAME }}</string>
+            <key>CFBundleExecutable</key><string>${{ env.APP_NAME }}</string>
+            <key>CFBundleVersion</key><string>1.0</string>
+            <key>CFBundlePackageType</key><string>APPL</string>
+            <key>LSMinimumSystemVersion</key><string>11.0</string>
+          </dict>
+          </plist>
+          EOF
+          # Apple Silicon refuses unsigned binaries; ad-hoc sign at minimum
+          codesign --force --deep -s - "$APP"
+          ditto -c -k --keepParent "$APP" "${{ env.APP_NAME }}-macos-universal.zip"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-macos-universal
+          path: ${{ env.APP_NAME }}-macos-universal.zip
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [build, macos-universal]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true

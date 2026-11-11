@@ -1,143 +1,125 @@
-name: Build and Release SUFFERING Server
+name: Build SUFFERING Server
 
 on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
   workflow_dispatch:
 
-permissions:
-  contents: write
+env:
+  APP_NAME: SufferingServer
+  PROJECT: SUFFERING-Server-Software.csproj
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
 
 jobs:
+  # Linux + Windows, cross-published from one Linux runner
   build:
-    runs-on: ${{ matrix.os }}
-    continue-on-error: ${{ matrix.experimental || false }}
-
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-latest
-            goos: windows
-            goarch: amd64
-            output: SUFFERING-Server-windows-x64.exe
-            use_mingw: true
-
-          - os: ubuntu-latest
-            goos: linux
-            goarch: amd64
-            output: SUFFERING-Server-linux-x64
-
-          - os: ubuntu-latest
-            goos: linux
-            goarch: arm64
-            output: SUFFERING-Server-linux-arm64
-            use_arm_compiler: true
-
-          - os: macos-latest
-            goos: darwin
-            goarch: amd64
-            output: SUFFERING-Server-macos-intel
-            experimental: true
-
-          - os: macos-latest
-            goos: darwin
-            goarch: arm64
-            output: SUFFERING-Server-macos-silicon
-            experimental: true
-
+          - rid: linux-x64
+            archive: tar.gz
+          - rid: linux-arm64
+            archive: tar.gz
+          - rid: win-x64
+            archive: zip
+          - rid: win-arm64
+            archive: zip
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Go
-        uses: actions/setup-go@v5
+      - uses: actions/setup-dotnet@v4
         with:
-          go-version: "1.24"
-          cache: true
+          dotnet-version: 10.0.x   # match your TargetFramework
 
-      - name: Install Windows x64 Cross-Compiler (MinGW, with C++ runtime)
-        if: matrix.use_mingw == true
+      - name: Publish
+        run: >
+          dotnet publish ${{ env.PROJECT }}
+          -c Release
+          -r ${{ matrix.rid }}
+          --self-contained true
+          -p:PublishSingleFile=true
+          -p:DebugType=None
+          -o publish/${{ matrix.rid }}
+
+      - name: Package (tar.gz)
+        if: matrix.archive == 'tar.gz'
         run: |
-          sudo apt-get update
-          sudo apt-get install -y g++-mingw-w64-x86-64
+          tar -czf ${{ env.APP_NAME }}-${{ matrix.rid }}.tar.gz -C publish/${{ matrix.rid }} .
 
-      - name: Install Linux ARM64 Cross-Compiler (with C++ runtime)
-        if: matrix.use_arm_compiler == true
+      - name: Package (zip)
+        if: matrix.archive == 'zip'
         run: |
-          sudo apt-get update
-          sudo apt-get install -y g++-aarch64-linux-gnu
+          cd publish/${{ matrix.rid }}
+          zip -r ../../${{ env.APP_NAME }}-${{ matrix.rid }}.zip .
 
-      - name: Build
-        env:
-          GOOS: ${{ matrix.goos }}
-          GOARCH: ${{ matrix.goarch }}
-          CGO_ENABLED: 1
-          CC: >-
-            ${{ matrix.use_mingw == true && 'x86_64-w64-mingw32-g++' ||
-                matrix.use_arm_compiler == true && 'aarch64-linux-gnu-g++' ||
-                'gcc' }}
-        run: |
-          mkdir -p dist
-
-          go build \
-            -trimpath \
-            -ldflags="-s -w" \
-            -o dist/${{ matrix.output }}
-
-      - name: Static-link C++ runtime for Windows build
-        if: matrix.use_mingw == true
-        env:
-          GOOS: ${{ matrix.goos }}
-          GOARCH: ${{ matrix.goarch }}
-          CGO_ENABLED: 1
-          CC: x86_64-w64-mingw32-g++
-          CGO_LDFLAGS: -static-libgcc -static-libstdc++
-        run: |
-          go build \
-            -trimpath \
-            -ldflags="-s -w" \
-            -o dist/${{ matrix.output }}
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.output }}
-          path: dist/${{ matrix.output }}
+          name: ${{ env.APP_NAME }}-${{ matrix.rid }}
+          path: ${{ env.APP_NAME }}-${{ matrix.rid }}.*
 
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    if: ${{ !cancelled() }}
-
+  # macOS universal .app (arm64 + x64 merged with lipo)
+  macos-universal:
+    runs-on: macos-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Read version
-        id: version
-        run: |
-          VERSION=$(cat version.txt)
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
+      - uses: actions/setup-dotnet@v4
         with:
-          path: artifacts
+          dotnet-version: 10.0.x
 
-      - name: Prepare release files
+      - name: Publish both architectures
         run: |
-          mkdir release
+          for rid in osx-arm64 osx-x64; do
+            dotnet publish ${{ env.PROJECT }} \
+              -c Release -r $rid \
+              --self-contained true \
+              -p:DebugType=None \
+              -o publish/$rid
+          done
 
-          # Flattens nested folders created by the download-artifact action
-          find artifacts -type f -exec cp {} release/ \;
+      - name: Merge into universal binaries
+        run: |
+          mkdir -p publish/universal
+          cd publish/osx-arm64
+          find . -type f | while read -r f; do
+            mkdir -p "../universal/$(dirname "$f")"
+            if file "$f" | grep -q "Mach-O"; then
+              lipo -create "$f" "../osx-x64/$f" -output "../universal/$f"
+            else
+              cp "$f" "../universal/$f"
+            fi
+          done
 
-          ls -la release
+      - name: Build .app bundle
+        run: |
+          APP="${{ env.APP_NAME }}.app"
+          mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
+          cp -R publish/universal/. "$APP/Contents/MacOS/"
+          chmod +x "$APP/Contents/MacOS/${{ env.APP_NAME }}"
+          cat > "$APP/Contents/Info.plist" <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>CFBundleName</key><string>${{ env.APP_NAME }}</string>
+            <key>CFBundleIdentifier</key><string>com.example.${{ env.APP_NAME }}</string>
+            <key>CFBundleExecutable</key><string>${{ env.APP_NAME }}</string>
+            <key>CFBundleVersion</key><string>1.0</string>
+            <key>CFBundlePackageType</key><string>APPL</string>
+            <key>LSMinimumSystemVersion</key><string>11.0</string>
+          </dict>
+          </plist>
+          EOF
+          # Apple Silicon refuses unsigned binaries; ad-hoc sign at minimum
+          codesign --force --deep -s - "$APP"
+          ditto -c -k --keepParent "$APP" "${{ env.APP_NAME }}-macos-universal.zip"
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+      - uses: actions/upload-artifact@v4
         with:
-          tag_name: v${{ steps.version.outputs.version }}
-          name: v${{ steps.version.outputs.version }}
-          generate_release_notes: true
-          files: release/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: ${{ env.APP_NAME }}-macos-universal
+          path: ${{ env.APP_NAME }}-macos-universal.zip
