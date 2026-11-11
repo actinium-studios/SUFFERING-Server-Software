@@ -1,8 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "cWxAltrl7tQ=",
+  "dgSpecHash": "Y6onOoHPMpY=",
   "success": true,
   "projectFilePath": "/home/pancakse/Documents/GitHub/SUFFERING-Server-Software/SUFFERING-Server-Software.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/home/pancakse/.nuget/packages/enet-csharp/2.4.8/enet-csharp.2.4.8.nupkg.sha512",
+    "/home/pancakse/.nuget/packages/microsoft.net.illink.tasks/10.0.13/microsoft.net.illink.tasks.10.0.13.nupkg.sha512",
+    "/home/pancakse/.nuget/packages/microsoft.netcore.app.runtime.linux-x64/10.0.13/microsoft.netcore.app.runtime.linux-x64.10.0.13.nupkg.sha512",
+    "/home/pancakse/.nuget/packages/microsoft.aspnetcore.app.runtime.linux-x64/10.0.13/microsoft.aspnetcore.app.runtime.linux-x64.10.0.13.nupkg.sha512",
+    "/home/pancakse/.nuget/packages/microsoft.netcore.app.host.linux-x64/10.0.13/microsoft.netcore.app.host.linux-x64.10.0.13.nupkg.sha512"
+  ],
   "logs": []
 }

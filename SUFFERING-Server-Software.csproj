@@ -17,4 +17,8 @@
     <Compile Include="src/**/*.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="ENet-CSharp" Version="2.4.8" />
+  </ItemGroup>
+
 </Project>

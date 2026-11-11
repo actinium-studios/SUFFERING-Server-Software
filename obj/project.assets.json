@@ -1,11 +1,158 @@
 {
   "version": 3,
   "targets": {
-    "net10.0": {}
+    "net10.0": {
+      "ENet-CSharp/2.4.8": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/ENet-CSharp.dll": {
+            "related": ".deps.json;.pdb"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/ENet-CSharp.dll": {
+            "related": ".deps.json;.pdb"
+          }
+        },
+        "build": {
+          "build/ENet-CSharp.targets": {}
+        },
+        "runtimeTargets": {
+          "runtimes/linux/native/libenet.so": {
+            "assetType": "native",
+            "rid": "linux"
+          },
+          "runtimes/osx/native/libenet.dylib": {
+            "assetType": "native",
+            "rid": "osx"
+          },
+          "runtimes/win/native/enet.dll": {
+            "assetType": "native",
+            "rid": "win"
+          }
+        }
+      },
+      "Microsoft.NET.ILLink.Tasks/10.0.13": {
+        "type": "package",
+        "build": {
+          "build/Microsoft.NET.ILLink.Tasks.props": {}
+        }
+      }
+    },
+    "net10.0/linux-x64": {
+      "ENet-CSharp/2.4.8": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/ENet-CSharp.dll": {
+            "related": ".deps.json;.pdb"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/ENet-CSharp.dll": {
+            "related": ".deps.json;.pdb"
+          }
+        },
+        "native": {
+          "runtimes/linux/native/libenet.so": {}
+        },
+        "build": {
+          "build/ENet-CSharp.targets": {}
+        }
+      },
+      "Microsoft.NET.ILLink.Tasks/10.0.13": {
+        "type": "package",
+        "build": {
+          "build/Microsoft.NET.ILLink.Tasks.props": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "ENet-CSharp/2.4.8": {
+      "sha512": "qaV3YuYMQaVuCmw9Hl4S66FW7jkgY8wzzxGDwCdzBYwMePBKfcHyjt8cnIaP9A3XqpCK3sO4ME8v6kzRpNwJww==",
+      "type": "package",
+      "path": "enet-csharp/2.4.8",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/ENet-CSharp.targets",
+        "enet-csharp.2.4.8.nupkg.sha512",
+        "enet-csharp.nuspec",
+        "lib/net35/ENet-CSharp.dll",
+        "lib/net5.0/ENet-CSharp.deps.json",
+        "lib/net5.0/ENet-CSharp.dll",
+        "lib/net5.0/ENet-CSharp.pdb",
+        "lib/net6.0/ENet-CSharp.deps.json",
+        "lib/net6.0/ENet-CSharp.dll",
+        "lib/net6.0/ENet-CSharp.pdb",
+        "lib/netcoreapp3.1/ENet-CSharp.deps.json",
+        "lib/netcoreapp3.1/ENet-CSharp.dll",
+        "lib/netcoreapp3.1/ENet-CSharp.pdb",
+        "lib/netstandard2.1/ENet-CSharp.deps.json",
+        "lib/netstandard2.1/ENet-CSharp.dll",
+        "lib/netstandard2.1/ENet-CSharp.pdb",
+        "license/license.txt",
+        "runtimes/linux/native/libenet.so",
+        "runtimes/osx/native/libenet.dylib",
+        "runtimes/win/native/enet.dll"
+      ]
+    },
+    "Microsoft.NET.ILLink.Tasks/10.0.13": {
+      "sha512": "40yrBMsLEcjixBR4G+FiUaBPvxXIPSKJ2OgSrbOZcmSDBda4Sb0k7BWrfDpIvn3IvvDzwOL/tEPa6gDQfh6aRw==",
+      "type": "package",
+      "path": "microsoft.net.illink.tasks/10.0.13",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "Sdk/Sdk.props",
+        "THIRD-PARTY-NOTICES.TXT",
+        "analyzers/dotnet/cs/ILLink.CodeFixProvider.dll",
+        "analyzers/dotnet/cs/ILLink.RoslynAnalyzer.dll",
+        "build/Microsoft.NET.ILLink.Analyzers.props",
+        "build/Microsoft.NET.ILLink.Tasks.props",
+        "build/Microsoft.NET.ILLink.targets",
+        "microsoft.net.illink.tasks.10.0.13.nupkg.sha512",
+        "microsoft.net.illink.tasks.nuspec",
+        "tools/net/ILLink.Tasks.deps.json",
+        "tools/net/ILLink.Tasks.dll",
+        "tools/net/Mono.Cecil.Mdb.dll",
+        "tools/net/Mono.Cecil.Pdb.dll",
+        "tools/net/Mono.Cecil.Rocks.dll",
+        "tools/net/Mono.Cecil.dll",
+        "tools/net/Sdk/Sdk.props",
+        "tools/net/build/Microsoft.NET.ILLink.Analyzers.props",
+        "tools/net/build/Microsoft.NET.ILLink.Tasks.props",
+        "tools/net/build/Microsoft.NET.ILLink.targets",
+        "tools/net/illink.deps.json",
+        "tools/net/illink.dll",
+        "tools/net/illink.runtimeconfig.json",
+        "tools/netframework/ILLink.Tasks.dll",
+        "tools/netframework/ILLink.Tasks.dll.config",
+        "tools/netframework/Mono.Cecil.Mdb.dll",
+        "tools/netframework/Mono.Cecil.Pdb.dll",
+        "tools/netframework/Mono.Cecil.Rocks.dll",
+        "tools/netframework/Mono.Cecil.dll",
+        "tools/netframework/Sdk/Sdk.props",
+        "tools/netframework/System.Buffers.dll",
+        "tools/netframework/System.Collections.Immutable.dll",
+        "tools/netframework/System.Memory.dll",
+        "tools/netframework/System.Numerics.Vectors.dll",
+        "tools/netframework/System.Reflection.Metadata.dll",
+        "tools/netframework/System.Runtime.CompilerServices.Unsafe.dll",
+        "tools/netframework/build/Microsoft.NET.ILLink.Analyzers.props",
+        "tools/netframework/build/Microsoft.NET.ILLink.Tasks.props",
+        "tools/netframework/build/Microsoft.NET.ILLink.targets",
+        "useSharedDesignerContext.txt"
+      ]
+    }
+  },
   "projectFileDependencyGroups": {
-    "net10.0": []
+    "net10.0": [
+      "ENet-CSharp >= 2.4.8",
+      "Microsoft.NET.ILLink.Tasks >= 10.0.13"
+    ]
   },
   "packageFolders": {
     "/home/pancakse/.nuget/packages/": {}
@@ -51,6 +198,18 @@
     "frameworks": {
       "net10.0": {
         "targetAlias": "net10.0",
+        "dependencies": {
+          "ENet-CSharp": {
+            "target": "Package",
+            "version": "[2.4.8, )"
+          },
+          "Microsoft.NET.ILLink.Tasks": {
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[10.0.13, )",
+            "autoReferenced": true
+          }
+        },
         "imports": [
           "net461",
           "net462",
@@ -62,6 +221,20 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Runtime.linux-x64",
+            "version": "[10.0.13, 10.0.13]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.linux-x64",
+            "version": "[10.0.13, 10.0.13]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Runtime.linux-x64",
+            "version": "[10.0.13, 10.0.13]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
@@ -342,6 +515,11 @@
           "System.Xml.XPath": "(,4.3.32767]",
           "System.Xml.XPath.XDocument": "(,5.0.32767]"
         }
+      }
+    },
+    "runtimes": {
+      "linux-x64": {
+        "#import": []
       }
     }
   }
