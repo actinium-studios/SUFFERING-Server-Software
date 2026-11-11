@@ -2,156 +2,421 @@
   "version": 3,
   "targets": {
     "net10.0": {
-      "ENet-CSharp/2.4.8": {
+      "KeraLua/1.4.9": {
         "type": "package",
         "compile": {
-          "lib/net6.0/ENet-CSharp.dll": {
-            "related": ".deps.json;.pdb"
+          "lib/net8.0/KeraLua.dll": {
+            "related": ".pdb;.xml"
           }
         },
         "runtime": {
-          "lib/net6.0/ENet-CSharp.dll": {
-            "related": ".deps.json;.pdb"
+          "lib/net8.0/KeraLua.dll": {
+            "related": ".pdb;.xml"
           }
         },
-        "build": {
-          "build/ENet-CSharp.targets": {}
-        },
         "runtimeTargets": {
-          "runtimes/linux/native/libenet.so": {
+          "runtimes/android-arm/native/liblua54.so": {
             "assetType": "native",
-            "rid": "linux"
+            "rid": "android-arm"
           },
-          "runtimes/osx/native/libenet.dylib": {
+          "runtimes/android-arm64/native/liblua54.so": {
+            "assetType": "native",
+            "rid": "android-arm64"
+          },
+          "runtimes/android-x64/native/liblua54.so": {
+            "assetType": "native",
+            "rid": "android-x64"
+          },
+          "runtimes/android-x86/native/liblua54.so": {
+            "assetType": "native",
+            "rid": "android-x86"
+          },
+          "runtimes/ios/native/liblua54.framework/Info.plist": {
+            "assetType": "native",
+            "rid": "ios"
+          },
+          "runtimes/ios/native/liblua54.framework/liblua54": {
+            "assetType": "native",
+            "rid": "ios"
+          },
+          "runtimes/linux-arm64/native/liblua54.so": {
+            "assetType": "native",
+            "rid": "linux-arm64"
+          },
+          "runtimes/linux-x64/native/liblua54.so": {
+            "assetType": "native",
+            "rid": "linux-x64"
+          },
+          "runtimes/maccatalyst/native/liblua54.framework/Info.plist": {
+            "assetType": "native",
+            "rid": "maccatalyst"
+          },
+          "runtimes/maccatalyst/native/liblua54.framework/liblua54": {
+            "assetType": "native",
+            "rid": "maccatalyst"
+          },
+          "runtimes/osx/native/liblua54.dylib": {
             "assetType": "native",
             "rid": "osx"
           },
-          "runtimes/win/native/enet.dll": {
+          "runtimes/tvos/native/liblua54.framework/Info.plist": {
             "assetType": "native",
-            "rid": "win"
+            "rid": "tvos"
+          },
+          "runtimes/tvos/native/liblua54.framework/liblua54": {
+            "assetType": "native",
+            "rid": "tvos"
+          },
+          "runtimes/win-arm/native/lua54.dll": {
+            "assetType": "native",
+            "rid": "win-arm"
+          },
+          "runtimes/win-arm64/native/lua54.dll": {
+            "assetType": "native",
+            "rid": "win-arm64"
+          },
+          "runtimes/win-x64/native/lua54.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x86/native/lua54.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
           }
         }
       },
-      "Microsoft.NET.ILLink.Tasks/10.0.13": {
-        "type": "package",
-        "build": {
-          "build/Microsoft.NET.ILLink.Tasks.props": {}
-        }
-      }
-    },
-    "net10.0/linux-x64": {
-      "ENet-CSharp/2.4.8": {
+      "LiteNetLib/2.1.5": {
         "type": "package",
         "compile": {
-          "lib/net6.0/ENet-CSharp.dll": {
-            "related": ".deps.json;.pdb"
+          "lib/net8.0/LiteNetLib.dll": {
+            "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net6.0/ENet-CSharp.dll": {
-            "related": ".deps.json;.pdb"
+          "lib/net8.0/LiteNetLib.dll": {
+            "related": ".xml"
           }
-        },
-        "native": {
-          "runtimes/linux/native/libenet.so": {}
-        },
-        "build": {
-          "build/ENet-CSharp.targets": {}
         }
       },
-      "Microsoft.NET.ILLink.Tasks/10.0.13": {
+      "NLua/1.7.9": {
         "type": "package",
+        "dependencies": {
+          "KeraLua": "1.4.9"
+        },
+        "compile": {
+          "lib/net8.0/NLua.dll": {
+            "related": ".pdb"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/NLua.dll": {
+            "related": ".pdb"
+          }
+        }
+      },
+      "Serilog/4.4.0": {
+        "type": "package",
+        "compile": {
+          "lib/net10.0/Serilog.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net10.0/Serilog.dll": {
+            "related": ".xml"
+          }
+        },
         "build": {
-          "build/Microsoft.NET.ILLink.Tasks.props": {}
+          "buildTransitive/Serilog.targets": {}
+        }
+      },
+      "Serilog.Sinks.Console/6.1.1": {
+        "type": "package",
+        "dependencies": {
+          "Serilog": "4.0.0"
+        },
+        "compile": {
+          "lib/net8.0/Serilog.Sinks.Console.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Serilog.Sinks.Console.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Serilog.Sinks.File/7.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Serilog": "4.2.0"
+        },
+        "compile": {
+          "lib/net9.0/Serilog.Sinks.File.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net9.0/Serilog.Sinks.File.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "YamlDotNet/18.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net10.0/YamlDotNet.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net10.0/YamlDotNet.dll": {
+            "related": ".xml"
+          }
         }
       }
     }
   },
   "libraries": {
-    "ENet-CSharp/2.4.8": {
-      "sha512": "qaV3YuYMQaVuCmw9Hl4S66FW7jkgY8wzzxGDwCdzBYwMePBKfcHyjt8cnIaP9A3XqpCK3sO4ME8v6kzRpNwJww==",
+    "KeraLua/1.4.9": {
+      "sha512": "oxor0U3bFxMRLY9TQ9QjDiiX1ojH2se5ei1T0hsSovqE+gAkC7ucqvApWBoClHUPOOsp/taWtzbZ+ZfP0Q4Nsw==",
       "type": "package",
-      "path": "enet-csharp/2.4.8",
+      "path": "keralua/1.4.9",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "build/ENet-CSharp.targets",
-        "enet-csharp.2.4.8.nupkg.sha512",
-        "enet-csharp.nuspec",
-        "lib/net35/ENet-CSharp.dll",
-        "lib/net5.0/ENet-CSharp.deps.json",
-        "lib/net5.0/ENet-CSharp.dll",
-        "lib/net5.0/ENet-CSharp.pdb",
-        "lib/net6.0/ENet-CSharp.deps.json",
-        "lib/net6.0/ENet-CSharp.dll",
-        "lib/net6.0/ENet-CSharp.pdb",
-        "lib/netcoreapp3.1/ENet-CSharp.deps.json",
-        "lib/netcoreapp3.1/ENet-CSharp.dll",
-        "lib/netcoreapp3.1/ENet-CSharp.pdb",
-        "lib/netstandard2.1/ENet-CSharp.deps.json",
-        "lib/netstandard2.1/ENet-CSharp.dll",
-        "lib/netstandard2.1/ENet-CSharp.pdb",
-        "license/license.txt",
-        "runtimes/linux/native/libenet.so",
-        "runtimes/osx/native/libenet.dylib",
-        "runtimes/win/native/enet.dll"
+        "LICENSE",
+        "build/net46/KeraLua.targets",
+        "keralua.1.4.9.nupkg.sha512",
+        "keralua.nuspec",
+        "lib/MonoAndroid/KeraLua.dll",
+        "lib/MonoAndroid/KeraLua.pdb",
+        "lib/MonoAndroid/KeraLua.xml",
+        "lib/net46/KeraLua.dll",
+        "lib/net46/KeraLua.pdb",
+        "lib/net46/KeraLua.xml",
+        "lib/net8.0/KeraLua.dll",
+        "lib/net8.0/KeraLua.pdb",
+        "lib/net8.0/KeraLua.xml",
+        "lib/net9.0-android28/KeraLua.dll",
+        "lib/net9.0-android28/KeraLua.pdb",
+        "lib/net9.0-android28/KeraLua.xml",
+        "lib/net9.0-ios11.0/KeraLua.dll",
+        "lib/net9.0-ios11.0/KeraLua.pdb",
+        "lib/net9.0-ios11.0/KeraLua.xml",
+        "lib/net9.0-maccatalyst13.0/KeraLua.dll",
+        "lib/net9.0-maccatalyst13.0/KeraLua.pdb",
+        "lib/net9.0-maccatalyst13.0/KeraLua.xml",
+        "lib/net9.0-macos10.13/KeraLua.dll",
+        "lib/net9.0-macos10.13/KeraLua.pdb",
+        "lib/net9.0-macos10.13/KeraLua.xml",
+        "lib/net9.0-tvos11.0/KeraLua.dll",
+        "lib/net9.0-tvos11.0/KeraLua.pdb",
+        "lib/net9.0-tvos11.0/KeraLua.xml",
+        "lib/netstandard2.0/KeraLua.dll",
+        "lib/netstandard2.0/KeraLua.pdb",
+        "lib/netstandard2.0/KeraLua.xml",
+        "lib/uap10.0/KeraLua.dll",
+        "lib/uap10.0/KeraLua.pdb",
+        "lib/uap10.0/KeraLua.pri",
+        "lib/uap10.0/KeraLua.xml",
+        "lib/xamarinios/KeraLua.dll",
+        "lib/xamarinios/KeraLua.pdb",
+        "lib/xamarinios/KeraLua.xml",
+        "lib/xamarinmac/KeraLua.dll",
+        "lib/xamarinmac/KeraLua.pdb",
+        "lib/xamarinmac/KeraLua.xml",
+        "lib/xamarintvos/KeraLua.dll",
+        "lib/xamarintvos/KeraLua.pdb",
+        "lib/xamarintvos/KeraLua.xml",
+        "runtimes/android-arm/native/liblua54.so",
+        "runtimes/android-arm64/native/liblua54.so",
+        "runtimes/android-x64/native/liblua54.so",
+        "runtimes/android-x86/native/liblua54.so",
+        "runtimes/ios/native/liblua54.framework/Info.plist",
+        "runtimes/ios/native/liblua54.framework/liblua54",
+        "runtimes/linux-arm64/native/liblua54.so",
+        "runtimes/linux-x64/native/liblua54.so",
+        "runtimes/maccatalyst/native/liblua54.framework/Info.plist",
+        "runtimes/maccatalyst/native/liblua54.framework/liblua54",
+        "runtimes/osx/native/liblua54.dylib",
+        "runtimes/tvos/native/liblua54.framework/Info.plist",
+        "runtimes/tvos/native/liblua54.framework/liblua54",
+        "runtimes/win-arm/native/lua54.dll",
+        "runtimes/win-arm64/native/lua54.dll",
+        "runtimes/win-x64/native/lua54.dll",
+        "runtimes/win-x86/native/lua54.dll",
+        "runtimes/win10-arm/nativeassets/uap10.0/lua54.dll",
+        "runtimes/win10-arm64/nativeassets/uap10.0/lua54.dll",
+        "runtimes/win10-x64/nativeassets/uap10.0/lua54.dll",
+        "runtimes/win10-x86/nativeassets/uap10.0/lua54.dll"
       ]
     },
-    "Microsoft.NET.ILLink.Tasks/10.0.13": {
-      "sha512": "40yrBMsLEcjixBR4G+FiUaBPvxXIPSKJ2OgSrbOZcmSDBda4Sb0k7BWrfDpIvn3IvvDzwOL/tEPa6gDQfh6aRw==",
+    "LiteNetLib/2.1.5": {
+      "sha512": "inIiisoxrbxLgTPeKDzkfdEVuQuITo/cCdZYrNs0iUNTlg1AnnTi2orYqHL5Dqz0yo5qeOX5zvywh0RIUi675g==",
       "type": "package",
-      "path": "microsoft.net.illink.tasks/10.0.13",
-      "hasTools": true,
+      "path": "litenetlib/2.1.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "Icon.png",
-        "Sdk/Sdk.props",
-        "THIRD-PARTY-NOTICES.TXT",
-        "analyzers/dotnet/cs/ILLink.CodeFixProvider.dll",
-        "analyzers/dotnet/cs/ILLink.RoslynAnalyzer.dll",
-        "build/Microsoft.NET.ILLink.Analyzers.props",
-        "build/Microsoft.NET.ILLink.Tasks.props",
-        "build/Microsoft.NET.ILLink.targets",
-        "microsoft.net.illink.tasks.10.0.13.nupkg.sha512",
-        "microsoft.net.illink.tasks.nuspec",
-        "tools/net/ILLink.Tasks.deps.json",
-        "tools/net/ILLink.Tasks.dll",
-        "tools/net/Mono.Cecil.Mdb.dll",
-        "tools/net/Mono.Cecil.Pdb.dll",
-        "tools/net/Mono.Cecil.Rocks.dll",
-        "tools/net/Mono.Cecil.dll",
-        "tools/net/Sdk/Sdk.props",
-        "tools/net/build/Microsoft.NET.ILLink.Analyzers.props",
-        "tools/net/build/Microsoft.NET.ILLink.Tasks.props",
-        "tools/net/build/Microsoft.NET.ILLink.targets",
-        "tools/net/illink.deps.json",
-        "tools/net/illink.dll",
-        "tools/net/illink.runtimeconfig.json",
-        "tools/netframework/ILLink.Tasks.dll",
-        "tools/netframework/ILLink.Tasks.dll.config",
-        "tools/netframework/Mono.Cecil.Mdb.dll",
-        "tools/netframework/Mono.Cecil.Pdb.dll",
-        "tools/netframework/Mono.Cecil.Rocks.dll",
-        "tools/netframework/Mono.Cecil.dll",
-        "tools/netframework/Sdk/Sdk.props",
-        "tools/netframework/System.Buffers.dll",
-        "tools/netframework/System.Collections.Immutable.dll",
-        "tools/netframework/System.Memory.dll",
-        "tools/netframework/System.Numerics.Vectors.dll",
-        "tools/netframework/System.Reflection.Metadata.dll",
-        "tools/netframework/System.Runtime.CompilerServices.Unsafe.dll",
-        "tools/netframework/build/Microsoft.NET.ILLink.Analyzers.props",
-        "tools/netframework/build/Microsoft.NET.ILLink.Tasks.props",
-        "tools/netframework/build/Microsoft.NET.ILLink.targets",
-        "useSharedDesignerContext.txt"
+        "LNL.png",
+        "README.md",
+        "lib/net8.0/LiteNetLib.dll",
+        "lib/net8.0/LiteNetLib.xml",
+        "lib/netstandard2.1/LiteNetLib.dll",
+        "lib/netstandard2.1/LiteNetLib.xml",
+        "litenetlib.2.1.5.nupkg.sha512",
+        "litenetlib.nuspec"
+      ]
+    },
+    "NLua/1.7.9": {
+      "sha512": "fRTEILixMFY6dfidmYacS4qEgUDKJyi8dyYHfiLZAoBxItA9PvBLyIqMwPzqtJY4kHNRbmeoDJNGzeD90US4lg==",
+      "type": "package",
+      "path": "nlua/1.7.9",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "lib/MonoAndroid/NLua.dll",
+        "lib/MonoAndroid/NLua.pdb",
+        "lib/net46/NLua.dll",
+        "lib/net46/NLua.pdb",
+        "lib/net8.0/NLua.dll",
+        "lib/net8.0/NLua.pdb",
+        "lib/net9.0-android28/NLua.dll",
+        "lib/net9.0-android28/NLua.pdb",
+        "lib/net9.0-ios11.0/NLua.dll",
+        "lib/net9.0-ios11.0/NLua.pdb",
+        "lib/net9.0-maccatalyst13.0/NLua.dll",
+        "lib/net9.0-maccatalyst13.0/NLua.pdb",
+        "lib/net9.0-macos10.13/NLua.dll",
+        "lib/net9.0-macos10.13/NLua.pdb",
+        "lib/net9.0-tvos11.0/NLua.dll",
+        "lib/net9.0-tvos11.0/NLua.pdb",
+        "lib/netstandard2.0/NLua.dll",
+        "lib/netstandard2.0/NLua.pdb",
+        "lib/uap10.0/NLua.dll",
+        "lib/uap10.0/NLua.pdb",
+        "lib/uap10.0/NLua.pri",
+        "lib/xamarinios/NLua.dll",
+        "lib/xamarinios/NLua.pdb",
+        "lib/xamarinmac/NLua.dll",
+        "lib/xamarinmac/NLua.pdb",
+        "lib/xamarintvos/NLua.dll",
+        "lib/xamarintvos/NLua.pdb",
+        "nlua.1.7.9.nupkg.sha512",
+        "nlua.nuspec"
+      ]
+    },
+    "Serilog/4.4.0": {
+      "sha512": "ZC6Le3rr4TVJJjS4KsQAesxeF1EhW9qcZmmG7eP5Y2G3+gTGkJEUXkq4+tZNPtyp05I0wWOxnIjwtxFweJsObw==",
+      "type": "package",
+      "path": "serilog/4.4.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "build/Serilog.targets",
+        "buildTransitive/Serilog.targets",
+        "icon.png",
+        "lib/net10.0/Serilog.dll",
+        "lib/net10.0/Serilog.xml",
+        "lib/net462/Serilog.dll",
+        "lib/net462/Serilog.xml",
+        "lib/net471/Serilog.dll",
+        "lib/net471/Serilog.xml",
+        "lib/net6.0/Serilog.dll",
+        "lib/net6.0/Serilog.xml",
+        "lib/net8.0/Serilog.dll",
+        "lib/net8.0/Serilog.xml",
+        "lib/net9.0/Serilog.dll",
+        "lib/net9.0/Serilog.xml",
+        "lib/netstandard2.0/Serilog.dll",
+        "lib/netstandard2.0/Serilog.xml",
+        "serilog.4.4.0.nupkg.sha512",
+        "serilog.nuspec"
+      ]
+    },
+    "Serilog.Sinks.Console/6.1.1": {
+      "sha512": "8jbqgjUyZlfCuSTaJk6lOca465OndqOz3KZP6Cryt/IqZYybyBu7GP0fE/AXBzrrQB3EBmQntBFAvMVz1COvAA==",
+      "type": "package",
+      "path": "serilog.sinks.console/6.1.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "icon.png",
+        "lib/net462/Serilog.Sinks.Console.dll",
+        "lib/net462/Serilog.Sinks.Console.xml",
+        "lib/net471/Serilog.Sinks.Console.dll",
+        "lib/net471/Serilog.Sinks.Console.xml",
+        "lib/net6.0/Serilog.Sinks.Console.dll",
+        "lib/net6.0/Serilog.Sinks.Console.xml",
+        "lib/net8.0/Serilog.Sinks.Console.dll",
+        "lib/net8.0/Serilog.Sinks.Console.xml",
+        "lib/netstandard2.0/Serilog.Sinks.Console.dll",
+        "lib/netstandard2.0/Serilog.Sinks.Console.xml",
+        "serilog.sinks.console.6.1.1.nupkg.sha512",
+        "serilog.sinks.console.nuspec"
+      ]
+    },
+    "Serilog.Sinks.File/7.0.0": {
+      "sha512": "fKL7mXv7qaiNBUC71ssvn/dU0k9t0o45+qm2XgKAlSt19xF+ijjxyA3R6HmCgfKEKwfcfkwWjayuQtRueZFkYw==",
+      "type": "package",
+      "path": "serilog.sinks.file/7.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "lib/net462/Serilog.Sinks.File.dll",
+        "lib/net462/Serilog.Sinks.File.xml",
+        "lib/net471/Serilog.Sinks.File.dll",
+        "lib/net471/Serilog.Sinks.File.xml",
+        "lib/net6.0/Serilog.Sinks.File.dll",
+        "lib/net6.0/Serilog.Sinks.File.xml",
+        "lib/net8.0/Serilog.Sinks.File.dll",
+        "lib/net8.0/Serilog.Sinks.File.xml",
+        "lib/net9.0/Serilog.Sinks.File.dll",
+        "lib/net9.0/Serilog.Sinks.File.xml",
+        "lib/netstandard2.0/Serilog.Sinks.File.dll",
+        "lib/netstandard2.0/Serilog.Sinks.File.xml",
+        "serilog-sink-nuget.png",
+        "serilog.sinks.file.7.0.0.nupkg.sha512",
+        "serilog.sinks.file.nuspec"
+      ]
+    },
+    "YamlDotNet/18.1.0": {
+      "sha512": "5K+9KFg2TdTl7VXv88Qzi/0lqK6JFoNP3lRuImPYGRV7K/QYklDyTrj4+A+KAki1JsQi6qKY+hDyY7d6WRqjrw==",
+      "type": "package",
+      "path": "yamldotnet/18.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "images/yamldotnet.png",
+        "lib/net10.0/YamlDotNet.dll",
+        "lib/net10.0/YamlDotNet.xml",
+        "lib/net47/YamlDotNet.dll",
+        "lib/net47/YamlDotNet.xml",
+        "lib/net8.0/YamlDotNet.dll",
+        "lib/net8.0/YamlDotNet.xml",
+        "lib/netstandard2.0/YamlDotNet.dll",
+        "lib/netstandard2.0/YamlDotNet.xml",
+        "lib/netstandard2.1/YamlDotNet.dll",
+        "lib/netstandard2.1/YamlDotNet.xml",
+        "yamldotnet.18.1.0.nupkg.sha512",
+        "yamldotnet.nuspec"
       ]
     }
   },
   "projectFileDependencyGroups": {
     "net10.0": [
-      "ENet-CSharp >= 2.4.8",
-      "Microsoft.NET.ILLink.Tasks >= 10.0.13"
+      "LiteNetLib >= 2.1.5",
+      "NLua >= 1.7.9",
+      "Serilog >= 4.4.0",
+      "Serilog.Sinks.Console >= 6.1.1",
+      "Serilog.Sinks.File >= 7.0.0",
+      "YamlDotNet >= 18.1.0"
     ]
   },
   "packageFolders": {
@@ -199,15 +464,29 @@
       "net10.0": {
         "targetAlias": "net10.0",
         "dependencies": {
-          "ENet-CSharp": {
+          "LiteNetLib": {
             "target": "Package",
-            "version": "[2.4.8, )"
+            "version": "[2.1.5, )"
           },
-          "Microsoft.NET.ILLink.Tasks": {
-            "suppressParent": "All",
+          "NLua": {
             "target": "Package",
-            "version": "[10.0.13, )",
-            "autoReferenced": true
+            "version": "[1.7.9, )"
+          },
+          "Serilog": {
+            "target": "Package",
+            "version": "[4.4.0, )"
+          },
+          "Serilog.Sinks.Console": {
+            "target": "Package",
+            "version": "[6.1.1, )"
+          },
+          "Serilog.Sinks.File": {
+            "target": "Package",
+            "version": "[7.0.0, )"
+          },
+          "YamlDotNet": {
+            "target": "Package",
+            "version": "[18.1.0, )"
           }
         },
         "imports": [
@@ -221,20 +500,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Runtime.linux-x64",
-            "version": "[10.0.13, 10.0.13]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.linux-x64",
-            "version": "[10.0.13, 10.0.13]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Runtime.linux-x64",
-            "version": "[10.0.13, 10.0.13]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
@@ -515,11 +780,6 @@
           "System.Xml.XPath": "(,4.3.32767]",
           "System.Xml.XPath.XDocument": "(,5.0.32767]"
         }
-      }
-    },
-    "runtimes": {
-      "linux-x64": {
-        "#import": []
       }
     }
   }

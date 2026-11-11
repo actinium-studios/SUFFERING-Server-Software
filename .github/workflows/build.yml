@@ -84,12 +84,18 @@ jobs:
 
       - name: Merge into universal binaries
         run: |
+          set -euo pipefail
           mkdir -p publish/universal
           cd publish/osx-arm64
           find . -type f | while read -r f; do
             mkdir -p "../universal/$(dirname "$f")"
             if file "$f" | grep -q "Mach-O"; then
-              lipo -create "$f" "../osx-x64/$f" -output "../universal/$f"
+              archs="$(lipo -archs "$f")"
+              if [[ "$archs" == *arm64* && "$archs" == *x86_64* ]]; then
+                cp "$f" "../universal/$f"
+              else
+                lipo -create "$f" "../osx-x64/$f" -output "../universal/$f"
+              fi
             else
               cp "$f" "../universal/$f"
             fi

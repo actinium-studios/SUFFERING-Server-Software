@@ -1,14 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "Y6onOoHPMpY=",
+  "dgSpecHash": "J4aupFkOt4U=",
   "success": true,
   "projectFilePath": "/home/pancakse/Documents/GitHub/SUFFERING-Server-Software/SUFFERING-Server-Software.csproj",
   "expectedPackageFiles": [
-    "/home/pancakse/.nuget/packages/enet-csharp/2.4.8/enet-csharp.2.4.8.nupkg.sha512",
-    "/home/pancakse/.nuget/packages/microsoft.net.illink.tasks/10.0.13/microsoft.net.illink.tasks.10.0.13.nupkg.sha512",
-    "/home/pancakse/.nuget/packages/microsoft.netcore.app.runtime.linux-x64/10.0.13/microsoft.netcore.app.runtime.linux-x64.10.0.13.nupkg.sha512",
-    "/home/pancakse/.nuget/packages/microsoft.aspnetcore.app.runtime.linux-x64/10.0.13/microsoft.aspnetcore.app.runtime.linux-x64.10.0.13.nupkg.sha512",
-    "/home/pancakse/.nuget/packages/microsoft.netcore.app.host.linux-x64/10.0.13/microsoft.netcore.app.host.linux-x64.10.0.13.nupkg.sha512"
+    "/home/pancakse/.nuget/packages/keralua/1.4.9/keralua.1.4.9.nupkg.sha512",
+    "/home/pancakse/.nuget/packages/litenetlib/2.1.5/litenetlib.2.1.5.nupkg.sha512",
+    "/home/pancakse/.nuget/packages/nlua/1.7.9/nlua.1.7.9.nupkg.sha512",
+    "/home/pancakse/.nuget/packages/serilog/4.4.0/serilog.4.4.0.nupkg.sha512",
+    "/home/pancakse/.nuget/packages/serilog.sinks.console/6.1.1/serilog.sinks.console.6.1.1.nupkg.sha512",
+    "/home/pancakse/.nuget/packages/serilog.sinks.file/7.0.0/serilog.sinks.file.7.0.0.nupkg.sha512",
+    "/home/pancakse/.nuget/packages/yamldotnet/18.1.0/yamldotnet.18.1.0.nupkg.sha512"
   ],
   "logs": []
 }
