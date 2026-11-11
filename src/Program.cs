@@ -7,6 +7,14 @@ using Serilog;
 using SUFFERING_Server_Software;
 using SUFFERING_Server_Software.Commands;
 
+if (Console.IsInputRedirected || Console.IsOutputRedirected)
+{
+    Console.Error.WriteLine("SUFFERING Server must be run in an interactive terminal.");
+    Console.Error.WriteLine("  Docker:  use `docker run -it ...` or `tty: true` and `stdin_open: true` in compose.");
+    Console.Error.WriteLine("  Linux:   run it inside `screen` or `tmux`, not as a bare background service.");
+    return 1;
+}
+
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u4}] {Message:lj}{NewLine}{Exception}")
     .WriteTo.File("logs/latest.log", rollingInterval: RollingInterval.Day, retainedFileCountLimit: 14)
