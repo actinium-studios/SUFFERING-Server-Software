@@ -1,5 +1,5 @@
 namespace SUFFERING_Server_Software.Commands;
- 
+
 public interface ICommand
 {
     string Name { get; }
@@ -7,6 +7,5 @@ public interface ICommand
     string Usage => Name;
     IReadOnlyList<string> Aliases => [];
     void Execute(ServerContext ctx, string[] args);
+    IEnumerable<string> Complete(ServerContext ctx, string[] previousArgs) => Enumerable.Empty<string>();
 }
- 
- 

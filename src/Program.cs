@@ -6,6 +6,7 @@ using LiteNetLib;
 using Serilog;
 using SUFFERING_Server_Software;
 using SUFFERING_Server_Software.Commands;
+using SUFFERING;
 
 if (Console.IsInputRedirected || Console.IsOutputRedirected)
 {
@@ -15,8 +16,10 @@ if (Console.IsInputRedirected || Console.IsOutputRedirected)
     return 1;
 }
 
+var editor = new LineEditor();
+
 Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u4}] {Message:lj}{NewLine}{Exception}")
+    .WriteTo.Sink(new EditorSink(editor, "[{Timestamp:HH:mm:ss} {Level:u4}] {Message:lj}{NewLine}{Exception}"))
     .WriteTo.File("logs/latest.log", rollingInterval: RollingInterval.Day, retainedFileCountLimit: 14)
     .CreateLogger();
 
@@ -45,10 +48,7 @@ var listener = new EventBasedNetListener();
 var net = new NetManager(listener);
 
 listener.ConnectionRequestEvent += req =>
-{
-    if (net.ConnectedPeersCount < config.MaxPlayers) req.AcceptIfKey("suffering-1");
-    else req.Reject();
-};
+    Handshake.Handle(req, serverFull: net.ConnectedPeersCount >= config.MaxPlayers);
 listener.PeerConnectedEvent += p => Log.Information("Player #{Id} connected from {Addr}", p.Id, p.Address);
 listener.PeerDisconnectedEvent += (p, info) => Log.Information("Player #{Id} left ({Reason})", p.Id, info.Reason);
 listener.NetworkReceiveEvent += (p, reader, channel, method) =>
@@ -63,6 +63,8 @@ if (!net.Start(config.Port))
     await Log.CloseAndFlushAsync();
     return 1;
 }
+Log.Information("SUFFERING Server {Version} (protocol {Protocol}) on {Os} {Arch}",
+    Protocol.GameVersion, Protocol.Version, RuntimeInformation.OSDescription, RuntimeInformation.ProcessArchitecture);
 Log.Information("SUFFERING server listening on UDP {Port} (max {Max} players)", config.Port, config.MaxPlayers);
 
 var registry = new CommandRegistry();
@@ -70,7 +72,16 @@ registry.RegisterAllFrom(Assembly.GetExecutingAssembly());
 var serverCtx = new ServerContext(config, net, registry, cts.Cancel, started);
 
 var pending = new ConcurrentQueue<Action>();
-var editor = new LineEditor(() => registry.Names);
+editor.Completions = line =>
+{
+    var parts = line.Split(' ');
+    if (parts.Length == 1) return registry.Names;
+
+    if (!registry.TryGet(parts[0], out var cmd)) return Enumerable.Empty<string>();
+
+    var prefix = string.Join(' ', parts[..^1]) + " ";
+    return cmd.Complete(serverCtx, parts[1..^1]).Select(arg => prefix + arg);
+};
 
 _ = Task.Run(() =>
 {
